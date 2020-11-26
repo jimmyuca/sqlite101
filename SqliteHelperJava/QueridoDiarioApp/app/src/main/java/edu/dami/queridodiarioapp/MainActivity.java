@@ -1,12 +1,17 @@
 package edu.dami.queridodiarioapp;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -17,6 +22,9 @@ import edu.dami.queridodiarioapp.models.DiaryEntry;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
+
+    private static final int SAVE_REQUEST_CODE = 10;
+
     private TextView tvContent;
     private DiaryEntriesDao entriesDao;
     
@@ -26,11 +34,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setup();
     }
-    
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == SAVE_REQUEST_CODE) {
+            onSaveEntry(resultCode);
+        }
+    }
+
     private void setup() {
         tvContent = findViewById(R.id.tv_content);
+        findViewById(R.id.fab_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateToSaveScreen();
+            }
+        });
+
         entriesDao = new DiaryEntriesDao(getApplicationContext());
-        
         loadData();
     }
     
@@ -54,14 +77,37 @@ public class MainActivity extends AppCompatActivity {
         for (DiaryEntry entry : entries) {
             contentBuilder
                     .pushSpan(new StyleSpan(Typeface.BOLD))
-                    .append(entry.getTitle() + "\n")
+                    .append(entry.getTitle().toUpperCase() + "\n")
                     .popSpan()
                     .pushSpan(new StyleSpan(Typeface.ITALIC))
                     .append(entry.getCreatedAt() + "\n")
                     .popSpan()
-                    .append(entry.getDescription() + "\n")
+                    .append(entry.getDescription() + "\n\n")
             ;
         }
         tvContent.setText(contentBuilder.build());
+    }
+
+    private void navigateToSaveScreen() {
+        Intent intent = new Intent(getBaseContext(), SaveEntryActivity.class);
+        startActivityForResult(intent, SAVE_REQUEST_CODE);
+    }
+
+    private void onSaveEntry(int resultCode) {
+        if(resultCode == SaveEntryActivity.SAVE_RESULT_ERR_CODE) {
+            showToast(R.string.error_saving_entry);
+            return;
+        }
+        if(resultCode != SaveEntryActivity.SAVE_RESULT_OK_CODE) {
+            Log.i(TAG, "Se ha retornado un codigo no soportado");
+            return;
+        }
+        showToast(R.string.entry_saved);
+        loadData();
+    }
+
+    private void showToast(@StringRes int id) {
+        Toast.makeText(this, getString(id), Toast.LENGTH_SHORT)
+                .show();
     }
 }

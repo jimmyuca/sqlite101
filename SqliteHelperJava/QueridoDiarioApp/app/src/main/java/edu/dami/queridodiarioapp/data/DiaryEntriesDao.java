@@ -1,5 +1,6 @@
 package edu.dami.queridodiarioapp.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -63,6 +64,13 @@ public class DiaryEntriesDao {
         return entriesFromDb;
     }
 
+    public long insert(DiaryEntry entry) {
+        MainDbHelper mDbHelper = MainDbHelper.getInstance(mContext);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        ContentValues valuesToInsert = buildRowContentFromModel(entry);
+        return db.insert(DiaryDbContract.Struct.TABLE_NAME, null, valuesToInsert);
+    }
+
     @Nullable
     private DiaryEntry toEntryFromCursor(@NonNull Cursor cursor) {
         try {
@@ -92,5 +100,13 @@ public class DiaryEntriesDao {
             ));
             return null;
         }
+    }
+
+    private ContentValues buildRowContentFromModel(DiaryEntry entry) {
+        ContentValues values = new ContentValues();
+        values.put(DiaryDbContract.Struct.COLUMN_TITLE, entry.getTitle());
+        values.put(DiaryDbContract.Struct.COLUMN_DESCRIPTION, entry.getDescription());
+        values.put(DiaryDbContract.Struct.COLUMN_CREATED_AT, DateHelper.getNowMillis());
+        return values;
     }
 }

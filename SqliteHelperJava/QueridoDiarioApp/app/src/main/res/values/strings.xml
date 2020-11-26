@@ -2,4 +2,11 @@
     <string name="app_name">Querido Diario</string>
     <string name="sample_long_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</string>
     <string name="no_data">Por el momento no hay entradas en el diario, ¿por qué no agregás una? :D</string>
+    <string name="title_activity_save_entry">Guardar Entrada</string>
+    <string name="add">Agregar</string>
+    <string name="save">Guardar</string>
+    <string name="error_saving_entry">Disculpa, ha ocurrido un error al guardar la entrada, intenta nuevamente.</string>
+    <string name="entry_saved">Genial! has creado una entrada</string>
+    <string name="title">Título</string>
+    <string name="description">Descripción</string>
 </resources>

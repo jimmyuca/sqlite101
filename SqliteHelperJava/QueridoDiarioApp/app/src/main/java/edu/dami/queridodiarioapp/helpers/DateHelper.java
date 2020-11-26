@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class DateHelper {
@@ -24,5 +25,9 @@ public class DateHelper {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(milli);
         return defaultDateTimeFormatter.format(calendar.getTime());
+    }
+
+    public static long getNowMillis() {
+        return new Date().getTime();
     }
 }

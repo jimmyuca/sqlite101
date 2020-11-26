@@ -13,6 +13,11 @@ public class DiaryEntry {
         this.createdAt = createdAt;
     }
 
+    public DiaryEntry(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
     public long getId() {
         return id;
     }

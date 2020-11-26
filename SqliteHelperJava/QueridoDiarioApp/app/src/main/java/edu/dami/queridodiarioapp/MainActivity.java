@@ -1,5 +1,6 @@
 package edu.dami.queridodiarioapp;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +36,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setup();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.item_delete) {
+            deleteAll();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override
@@ -104,6 +122,16 @@ public class MainActivity extends AppCompatActivity {
         }
         showToast(R.string.entry_saved);
         loadData();
+    }
+
+    private void deleteAll() {
+        boolean isDeleted = entriesDao.deleteAll();
+        if(isDeleted) {
+            showToast(R.string.records_deleted);
+            loadData();
+        } else {
+            showToast(R.string.records_deleted_error);
+        }
     }
 
     private void showToast(@StringRes int id) {

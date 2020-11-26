@@ -9,4 +9,7 @@
     <string name="entry_saved">Genial! has creado una entrada</string>
     <string name="title">Título</string>
     <string name="description">Descripción</string>
+    <string name="delete_all">Eliminar todo</string>
+    <string name="records_deleted">Chasquido de thanos!</string>
+    <string name="records_deleted_error">Yo soy IronMan!</string>
 </resources>

@@ -71,6 +71,18 @@ public class DiaryEntriesDao {
         return db.insert(DiaryDbContract.Struct.TABLE_NAME, null, valuesToInsert);
     }
 
+    public boolean deleteAll() {
+        try {
+            MainDbHelper mDbHelper = MainDbHelper.getInstance(mContext);
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            long result = db.delete(DiaryDbContract.Struct.TABLE_NAME, null, null);
+            return true;
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
+            return false;
+        }
+    }
+
     @Nullable
     private DiaryEntry toEntryFromCursor(@NonNull Cursor cursor) {
         try {
